@@ -1,0 +1,28 @@
+                                           wgrib2 运用示例
+  1，把grid2文件输出到txt
+    wgrib2 2017051100_CMC_naefsbc_latlon1p0x1p0_P000_001.grib2 -crlf -v -s -start_ft  -lon (lon) (lat)>dd.txt
+    参数说明：
+	a:wgrib2 IN.grb -crlf -v -s v0 -start_ft -lon (LON) (LAT)
+	b:-crlf adds a cr-lf at the end of each line instead of the default lf or newline.
+	(for windows users)
+	c: -v turn on verbose mode
+	d: -s is the standard inventory in verbose mode
+	e: -v0 turn off verbose mode
+	f: -start_ft adds the forecast or verification time or the start of the verification time
+	if a forecast for a period of time (ex. 3-4 month forecast).
+	h:  -lon adds the point value to the inventory
+ 2,输出grid2第一行数据到txt，默认输出全部
+   wgrib2 2017051100_CMC_naefsbc_latlon1p0x1p0_P000_001.grib2 -crlf -s -d 1 >dd.txt
+   说明：记的带空格，否则出错
+ 3,把各字段统计值写入txt
+   wgrib2 2017051100_CMC_naefsbc_latlon1p0x1p0_P000_001.grib2 -crlf  -stats >dd.txt
+ 4,把各字段最大值写入txt
+    wgrib2 2017051100_CMC_naefsbc_latlon1p0x1p0_P000_001.grib2 -crlf  -max >dd.txt
+ 5,把各字段最小值写入txt
+ wgrib2 2017051100_CMC_naefsbc_latlon1p0x1p0_P000_001.grib2 -crlf  -min >dd.txt
+ 6.spread的用法，全部输出太大了，只输出第一条，但还是很多，不知代表啥意思
+   wgrib2 2017051100_CMC_naefsbc_latlon1p0x1p0_P000_001.grib2 -crlf  -s -d 1  -spread a.txt
+ 
+ 7,输出某个点的值到txt
+   wgrib2 2017051100_CMC_naefsbc_latlon1p0x1p0_P000_001.grib2 -crlf  -s -ij 1 1 > d.txt
+ 8,
