@@ -18,7 +18,7 @@ from lib.CWB_module import cwbdata
 # output = input("請出入你所需的資料，ex:WS、WD、T : ")
 
 time_one = datetime.datetime.strptime('2016-06-01', '%Y-%m-%d')
-time_two = datetime.datetime.strptime('2016-06-30', '%Y-%m-%d')
+time_two = datetime.datetime.strptime('2016-06-01', '%Y-%m-%d')
 
 while (time_one <= time_two):
     start = time_one.strftime('%Y-%m-%d')

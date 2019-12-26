@@ -21,10 +21,12 @@ def MergeTxt_obs(start,end,workdir):
         filetime = start.strftime('%Y-%m-%d')
         filetimes.append(filetime)
         start += datetime.timedelta(days=1)
-        obs_out = pd.read_excel("D:\\bokai\\python\\python-code\\氣象性能評估工具\\data\\obs\\"+filetimes[0]+"_T2_obs.xlsx")
+        obs_out = pd.read_excel("D:\\bokai\\python\\python-code\\氣象性能評估工具V2\\data\\obs\\"+filetimes[0]+"_T2_obs.xlsx")
+
 
     for i in range(1,len(filetimes)):
-        obs_in = pd.read_excel("D:\\bokai\\python\\python-code\\氣象性能評估工具\\data\\obs\\"+filetimes[i]+"_T2_obs.xlsx")
+        obs_in = pd.read_excel("D:\\bokai\\python\\python-code\\氣象性能評估工具V2\\data\\obs\\"+filetimes[i]+"_T2_obs.xlsx")
+        # print(obs_in['times'][i])
         obs_out = pd.merge(obs_out,obs_in,how='outer')
     newfile = filetimes[0]+'_'+filetimes[-1]+'_T2_obs.xlsx'
     obs_out.to_excel(workdir+"\\"+newfile,index=False)

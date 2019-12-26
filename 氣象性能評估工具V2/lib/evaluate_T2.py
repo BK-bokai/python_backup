@@ -23,72 +23,74 @@ def evaluate_T2(obsfile,simfile,workdir):
 
 
 
-    for i in range(0,len(sim['times'])):
-        sim['times'][i] = datetime.datetime.strptime(sim['times'][i], '%Y-%m-%d-%H')
 
-    for i in range(0,len(obs['times'])):
-        obs['times'][i] = datetime.datetime.strptime(obs['times'][i], '%Y-%m-%d %H')
-        # print(obs['times'][i] in sim['times'])
-    # print('2016-06-05-03' in sim['times'])
-    # print(sim['times'][6])
-    # domain = {
-    #     '北':['鞍部', '淡水站', '竹子湖', '基隆', '台北', '新屋', '板橋', '新竹', '宜蘭', '蘇澳'],
-    #     '中':['梧棲', '台中', '日月潭', '阿里山', '嘉義', '玉山'],
-    #     '南':['嘉義', '玉山', '永康', '台南', '高雄', '大武', '恆春'],
-    #     '雲嘉':['台中', '日月潭', '阿里山', '嘉義', '玉山', '永康', '台南'],
-    #     '東部':['台中', '花蓮', '日月潭', '阿里山', '玉山', '成功', '台東', '大武'],
-    #     '中雲嘉':['梧棲', '台中', '日月潭', '阿里山', '嘉義', '玉山', '永康', '台南'],
-    #     '全台':['鞍部', '淡水站', '竹子湖', '基隆', '台北', '新屋', '板橋', '新竹', '宜蘭', '蘇澳', '梧棲',
-    #                 '台中', '花蓮', '日月潭', '阿里山', '嘉義', '玉山', '成功', '永康', '台南', '台東', '高雄', '大武', '恆春'],
-    # }
+    # for i in range(0,len(obs['times'])):
+    #     condition = sim['times'].isin([obs['times'][i]]) #找出與觀測資料同時間的模擬資料的位置
+    #     print(sim[condition]['times'])
+    #     print(sim[condition]['竹子湖'])
+
+        
+
+    domain = {
+        '北':['鞍部', '淡水站', '竹子湖', '基隆', '台北', '新屋', '板橋', '新竹', '宜蘭', '蘇澳'],
+        '中':['梧棲', '台中', '日月潭', '阿里山', '嘉義', '玉山'],
+        '南':['嘉義', '玉山', '永康', '台南', '高雄', '大武', '恆春'],
+        '雲嘉':['台中', '日月潭', '阿里山', '嘉義', '玉山', '永康', '台南'],
+        '東部':['台中', '花蓮', '日月潭', '阿里山', '玉山', '成功', '台東', '大武'],
+        '中雲嘉':['梧棲', '台中', '日月潭', '阿里山', '嘉義', '玉山', '永康', '台南'],
+        '全台':['鞍部', '淡水站', '竹子湖', '基隆', '台北', '新屋', '板橋', '新竹', '宜蘭', '蘇澳', '梧棲',
+                    '台中', '花蓮', '日月潭', '阿里山', '嘉義', '玉山', '成功', '永康', '台南', '台東', '高雄', '大武', '恆春'],
+    }
 
 
-    # MBE_result = {}
-    # MAGE_result = {}
-    # for area,stons in domain.items():
+    MBE_result = {}
+    MAGE_result = {}
+    for area,stons in domain.items():
 
-    #     MBE = {ston: 0 for ston in stons}
-    #     MBE['overal'] = 0
+        MBE = {ston: 0 for ston in stons}
+        MBE['overal'] = 0
 
-    #     MAGE = {ston: 0 for ston in stons}
-    #     MAGE['overal'] = 0 
+        MAGE = {ston: 0 for ston in stons}
+        MAGE['overal'] = 0 
 
-    #     sim_overal_hr = 0
+        sim_overal_hr = 0
 
-    #     for ston in stons:
-    #         sim_hr_num=0
-    #         print('Processing'+ston)
-    #         for i in range(0,len(obs['times'])):
-    #             if (obs['times'][i]==sim['times'][i]) and (float(obs[ston][i]) < 999.) and (float(sim[ston][i]) < 999.):
-    #                 sim_hr_num += 1 #總共模擬的小時
-    #                 sim_overal_hr += 1
+        for ston in stons:
+            sim_hr_num=0
+            print('Processing'+ston)
+            for i in range(0,len(obs['times'])):
+                condition = sim['times'].isin([obs['times'][i]]) #找出與觀測資料同時間的模擬資料的位置
+                #     print(sim[condition]['times'])
+                #     print(sim[condition]['竹子湖'])
+                if  (float(obs[ston][i]) < 999.) and (float(sim[condition][ston]) < 999.):
+                    sim_hr_num += 1 #總共模擬的小時
+                    sim_overal_hr += 1
+                    tmp=float(sim[condition][ston])-float(obs[ston][i]) 
+                    MBE[ston] += tmp
 
-    #                 tmp=sim[ston][i]-obs[ston][i] 
-    #                 MBE[ston] += tmp
+                    MBE['overal'] += tmp
 
-    #                 MBE['overal'] += tmp
+                    abstmp = abs(float(sim[condition][ston])-float(obs[ston][i]))
+                    MAGE[ston] += abstmp
 
-    #                 abstmp = abs(sim[ston][i]-obs[ston][i])
-    #                 MAGE[ston] += abstmp
+                    MAGE['overal'] += abstmp
 
-    #                 MAGE['overal'] += abstmp
+            if (sim_hr_num != 0):
+                MBE[ston] = MBE[ston]/(sim_hr_num)
+                MAGE[ston] = MAGE[ston]/(sim_hr_num)
+            else:
+                MBE[ston] = None
+                MAGE[ston] = None
 
-    #         if (sim_hr_num != 0):
-    #             MBE[ston] = MBE[ston]/(sim_hr_num)
-    #             MAGE[ston] = MAGE[ston]/(sim_hr_num)
-    #         else:
-    #             MBE[ston] = None
-    #             MAGE[ston] = None
+        sim_overal_hr = sim_overal_hr/len(stons)
 
-    #     sim_overal_hr = sim_overal_hr/len(stons)
+        MBE['overal'] = MBE['overal']/(len(stons)*sim_overal_hr)
+        MAGE['overal'] = MAGE['overal']/(len(stons)*sim_overal_hr)
 
-    #     MBE['overal'] = MBE['overal']/(len(stons)*sim_overal_hr)
-    #     MAGE['overal'] = MAGE['overal']/(len(stons)*sim_overal_hr)
+        MBE_result[area] = MBE
+        MAGE_result[area] = MAGE
 
-    #     MBE_result[area] = MBE
-    #     MAGE_result[area] = MAGE
-
-    # return {'MBE':MBE_result,'MAGE':MAGE_result,'domain':domain}
+    return {'MBE':MBE_result,'MAGE':MAGE_result,'domain':domain}
 
 
     

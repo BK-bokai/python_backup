@@ -28,7 +28,7 @@ def MergeTxt_sim(start,end,workdir):
     newfile = 'wrfout_d04_'+filetimes[0]+'_'+filetimes[-1]+'_T2.txt'
     outputFile = open(workdir+'\\'+newfile,"a+")
     for i in range(0,len(filetimes)):
-        inputFile = open("D:\\bokai\\python\\python-code\\氣象性能評估工具\\data\\newsim\\wrfout_d04_"+filetimes[i]+"_T2.txt")
+        inputFile = open("D:\\bokai\\python\\python-code\\氣象性能評估工具V2\\data\\newsim\\wrfout_d04_"+filetimes[i]+"_T2.txt")
         outputFile.write(inputFile.read())
     
     return newfile
