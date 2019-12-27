@@ -9,8 +9,8 @@ import os
 import re
 import xlsxwriter
 import datetime
-from lib.data_change_Time import data_change_Time
-from lib.txt_To_xlsx import txt_To_xlsx
+# from lib.data_change_Time import data_change_Time
+# from lib.txt_To_xlsx import txt_To_xlsx
 import glob
 import sys
 
@@ -28,7 +28,7 @@ def MergeTxt_sim(start,end,workdir):
     newfile = 'wrfout_d04_'+filetimes[0]+'_'+filetimes[-1]+'_T2.txt'
     outputFile = open(workdir+'\\'+newfile,"a+")
     for i in range(0,len(filetimes)):
-        inputFile = open("D:\\bokai\\python\\python-code\\氣象性能評估工具V2\\data\\newsim\\wrfout_d04_"+filetimes[i]+"_T2.txt")
+        inputFile = open("D:\\bokai\\python\\python-code\\氣象性能評估工具V2\\data\\sim\\T2\\wrfout_d04_"+filetimes[i]+"_T2.txt")
         outputFile.write(inputFile.read())
     
     return newfile
@@ -41,14 +41,13 @@ def raw_MergeTxt_sim():
     end = datetime.datetime.strptime('2016-06-30', '%Y-%m-%d')
     while (start <= end):
         filetime = start.strftime('%Y-%m-%d')
-        outputFile = open('D:\\bokai\\python\\python-code\\氣象性能評估工具\\data\\newsim\\wrfout_d04_'+filetime+'_T2.txt',"a+")
-        for txtFile in (glob.glob('D:\\bokai\\python\\python-code\\氣象性能評估工具\\data\\sim\\wrfout_d04_'+filetime+'*.txt')):
+        outputFile = open('D:\\bokai\\python\\python-code\\氣象性能評估工具V2\\data\\sim\\WD\\wrfout_d04_'+filetime+'_WD.txt',"a+")
+        for txtFile in (glob.glob('D:\\bokai\\python\\python-code\\氣象性能評估工具V2\\data\\sim\\wrfout_d04_'+filetime+'*.txt')):
             inputFile = open(txtFile)
             outputFile.write(inputFile.read())
         start += datetime.timedelta(days=1)
 
 
-    
 
 # outputFile = open('D:\\bokai\\python\\python-code\\氣象性能評估工具\\data\\newsim\\wrfout_d04_2016-06-30_00_00_00.txt',"a+")
 # for txtFile in glob.glob('D:\\bokai\\python\\python-code\\氣象性能評估工具\\data\\sim\\wrfout_d04_2016-06-30*.txt'):

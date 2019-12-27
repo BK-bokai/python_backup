@@ -12,19 +12,20 @@ from lib.CWB_module import cwbdata
 
 
 
-# filename = input("請輸入要儲存檔案名稱，ex:201601.csv : ")
+# #filename = input("請輸入要儲存檔案名稱，ex:201601.csv : ")
 # start = input("請輸入起始時間，ex:2016-01-01 : ")
 # end = input("請輸入結束時間，ex:2016-02-01 : ")
 # output = input("請出入你所需的資料，ex:WS、WD、T : ")
 
-time_one = datetime.datetime.strptime('2016-06-01', '%Y-%m-%d')
-time_two = datetime.datetime.strptime('2016-06-01', '%Y-%m-%d')
+time_one = datetime.datetime.strptime('2016-05-30', '%Y-%m-%d')
+time_two = datetime.datetime.strptime('2016-07-01', '%Y-%m-%d')
 
 while (time_one <= time_two):
     start = time_one.strftime('%Y-%m-%d')
     end   = time_one.strftime('%Y-%m-%d')
-    filename = start+'_T2_obs'
-    output = 'T'
+    output = 'WD'
+    filename = start+'_'+output+'_obs'
+    
 
 
     hrnum = ((datetime.datetime.strptime(end, '%Y-%m-%d') -
