@@ -44,9 +44,11 @@ def cwbdata(sta, start, end, output):
                 data[i-4] = data[i].get_text().strip("\n").split()
                 elements.append(data[i-4])
                 ele_array = np.array(elements)
-                T.append(ele_array[i-4, 3] if check.match(ele_array[i-4, 3]) or ele_array[i-4, 3].isdigit() else 999.9)
-                WS.append(ele_array[i-4, 6] if check.match(ele_array[i-4, 6]) or ele_array[i-4, 6].isdigit() else 999.9)
-                WD.append(ele_array[i-4, 7] if check.match(ele_array[i-4, 7]) or ele_array[i-4, 7].isdigit() else 999.9)
+                T.append(float(ele_array[i-4, 3] if check.match(ele_array[i-4, 3]) or ele_array[i-4, 3].isdigit() else 999.9))
+                WS.append(float(ele_array[i-4, 6] if check.match(ele_array[i-4, 6]) or ele_array[i-4, 6].isdigit() else 999.9))
+                WDtmp = float(ele_array[i-4, 7] if check.match(ele_array[i-4, 7]) or ele_array[i-4, 7].isdigit() else 999.9)
+                WD.append(WDtmp if (float(WDtmp) != 0.) else 999.9)
+                # WD.append(ele_array[i-4, 7] if check.match(ele_array[i-4, 7]) or ele_array[i-4, 7].isdigit() else 999.9)
         else:
             ele_array = []
             ele_array = np.zeros((len(hrlen), 17))

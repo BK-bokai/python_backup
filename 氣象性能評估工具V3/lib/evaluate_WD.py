@@ -39,20 +39,27 @@ def evaluate_WD(obsfile, simfile, workdir, start, end):
     sim_hr = {ston: 0 for ston in domain['全台']}
 
     for ston in domain['全台']:
-        sim_hr_num = 0
+        sim_hr_num=0
         print('Processing'+ston)
-        for i in range(0, len(sim['UTC'])):
-            if (obs['UTC'][i] == sim['UTC'][i]) and (float(obs[ston][i]) < 999.) and (float(sim[ston][i]) < 999.):
-                sim_hr[ston] += 1  # 總共模擬的小時
-
-                sim_obs[ston] += (float(sim[ston][i])-float(obs[ston][i]))
-                abs_sim_obs[ston] += abs(float(sim[ston][i])-float(obs[ston][i]))
 
 
+        for i in range(0,len(sim['UTC'])):
+            if (obs['UTC'][i]==sim['UTC'][i]) and (float(obs[ston][i]) < 999.) and (float(sim[ston][i]) < 999.):
+                sim_hr[ston] += 1 #總共模擬的小時 
+                if (float(sim[ston][i])-float(obs[ston][i])) > 180.0:
+                    sim_obs[ston] += (float(sim[ston][i])-float(obs[ston][i])-360.0)
+                    abs_sim_obs[ston] += abs((float(sim[ston][i])-float(obs[ston][i])-360.0))
+                elif (float(sim[ston][i])-float(obs[ston][i])) < -180.0:
+                    sim_obs[ston] += (float(sim[ston][i])-float(obs[ston][i])+360.0)
+                    abs_sim_obs[ston] += abs((float(sim[ston][i])-float(obs[ston][i])+360.0))
+                else:
+                    sim_obs[ston] += (float(sim[ston][i])-float(obs[ston][i]))
+                    abs_sim_obs[ston] += abs(float(sim[ston][i])-float(obs[ston][i]))
+                
     WNMB_result={}
     WNME_result={}
-
-    for area, stons in domain.items():
+      
+    for area,stons in domain.items():
 
         WNMB={ston: 0 for ston in stons}
         WNMB['overal']=0
@@ -60,12 +67,13 @@ def evaluate_WD(obsfile, simfile, workdir, start, end):
         WNME={ston: 0 for ston in stons}
         WNME['overal']=0
 
-        sim_overal_hr=0
+        sim_overal_hr = 0
+
         for ston in stons:
             # print('Processing'+ston)
             if (sim_hr[ston] != 0):
-                WNMB[ston]=(sim_obs[ston]/(sim_hr[ston]*360))*100
-                WNME[ston]=(abs_sim_obs[ston]/(sim_hr[ston]*360))*100
+                WNMB[ston]= sim_obs[ston]/(360*sim_hr[ston])
+                WNME[ston]= abs_sim_obs[ston]/(360*sim_hr[ston])
 
                 WNMB['overal'] += sim_obs[ston]
                 WNME['overal'] += abs_sim_obs[ston]
@@ -75,11 +83,14 @@ def evaluate_WD(obsfile, simfile, workdir, start, end):
                 WNMB[ston]=None
                 WNME[ston]=None
 
+
         sim_overal_hr = sim_overal_hr/len(stons) # 把所有測站總模擬小時除上測站數就是所有測站平均模擬小時
-        WNMB['overal'] = (WNMB['overal']/(sim_overal_hr*len(stons)*360))*100
-        WNME['overal'] = (WNME['overal']/(sim_overal_hr*len(stons)*360))*100
+        
+        WNMB['overal'] = (WNMB['overal']/(360*sim_overal_hr*len(stons)))
+        WNME['overal'] = (WNME['overal']/(360*sim_overal_hr*len(stons)))
 
         WNMB_result[area]=WNMB
         WNME_result[area]=WNME
+
 
     return {'WNMB': WNMB_result, 'WNME': WNME_result, 'domain': domain}
