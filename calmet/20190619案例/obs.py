@@ -20,8 +20,8 @@ obs = pd.read_excel("永康20190618-20.xlsx")
 
 # print(len(obs['時間']))
 
-for i in range(0,len(obs['時間'])):
-        print (obs['時間'][i])
+# for i in range(0,len(obs['時間'])):
+#         print (obs['時間'][i])
 
 
 while(datestart < dateend):
@@ -34,13 +34,12 @@ while(datestart < dateend):
                         # data= ','.join(data)
                         time_key[datestart]=data
 
-        
-        
+
         if(float(time_key[datestart][6])==9999):
                 time_key[datestart][6] = time_key[datestart-datetime.timedelta(minutes=10)][6]
                 time_key[datestart][5] = time_key[datestart-datetime.timedelta(minutes=10)][5]
 
-
+        
         datestart+=datetime.timedelta(minutes=10)
         
 for key, value in time_key.items() :
@@ -50,14 +49,14 @@ for key, value in time_key.items() :
         print (key)
         print (value)
 
-wb = Workbook()
-ws = wb.active
-ws.title = "永康"
-for key, value in time_key.items() :
-        # writer.writerow([key,str(value)])
-        ws.append([key,str(value)])
-# 儲存成 create_sample.xlsx 檔案
-wb.save('永康.xlsx')
+# wb = Workbook()
+# ws = wb.active
+# ws.title = "永康"
+# for key, value in time_key.items() :
+#         # writer.writerow([key,str(value)])
+#         ws.append([key,str(value)])
+# # 儲存成 create_sample.xlsx 檔案
+# wb.save('永康.xlsx')
 
 
-# ele_array = np.zeros( (len(hrlen),17))
+# # ele_array = np.zeros( (len(hrlen),17))

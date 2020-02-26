@@ -7,9 +7,9 @@ import time
 import calendar
 import re
 
-sta='C0O900'
-start='2019-06-17'
-end='2019-06-22'
+sta='467410'
+start='2019-12-09'
+end='2019-12-11'
  
 datestart=datetime.datetime.strptime(start,'%Y-%m-%d')
 dateend=datetime.datetime.strptime(end,'%Y-%m-%d')

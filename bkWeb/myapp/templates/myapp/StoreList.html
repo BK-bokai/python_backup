@@ -1,0 +1,41 @@
+{% extends '../layout/master.html' %}
+{% load static %}
+{% block title %} 商家列表 {% endblock %}
+
+
+{% block body %}
+<div class="container body">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">負責人</th>
+                <th scope="col">店名</th>
+                <th scope="col">電話</th>
+                <th scope="col">地址</th>
+                <th scope="col">菜單</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for store in StoreList %}
+            <tr>
+                <td>{{store.boss}}</td>
+                <td>{{store.store_name}}</td>
+                <td>{{store.phone}}</td>
+                <td>{{store.address}}</td>
+                <td>
+                    <a href="{% url 'Myapp:StoreDetail' store.id %}" class="btn btn-primary btn-sm" role="button"
+                        aria-pressed="true">前往菜單</a>
+                </td>
+                <td>
+                    <a href="{% url 'Myapp:StoreDetail' store.id %}" class="btn btn-primary btn-sm" role="button"
+                        aria-pressed="true">給予評論</a>
+                </td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
