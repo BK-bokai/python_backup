@@ -21,15 +21,9 @@ def cwbdata(sta, start, end, output):
     T = []
     WD = []
     WS = []
-    Rain = []
-    GloblRad=[]
     data= {}
 
     check = re.compile(r'^[-+]?[0-9]+\.[0-9]+$')
-    # 開頭是+Or-有或沒有可以
-    # 然後匹配0-9
-    # 中間.的意思是不論中間有什麼不適\n就好
-    # 結尾匹配0-9一定要有一個
     while datestart <= dateend:
 
         print(datestart.strftime('%Y-%m-%d'))
@@ -54,12 +48,6 @@ def cwbdata(sta, start, end, output):
                 WS.append(float(ele_array[i-4, 6] if check.match(ele_array[i-4, 6]) or ele_array[i-4, 6].isdigit() else 999.9))
                 WDtmp = float(ele_array[i-4, 7] if check.match(ele_array[i-4, 7]) or ele_array[i-4, 7].isdigit() else 999.9)
                 WD.append(WDtmp if (float(WDtmp) != 0.) else 999.9)
-                Rain.append(float(ele_array[i-4, 10] if check.match(ele_array[i-4, 10]) or ele_array[i-4, 10].isdigit() else 999.9))
-                GloblRad.append(float(ele_array[i-4, 13] if check.match(ele_array[i-4, 13]) or ele_array[i-4, 13].isdigit() else 999.9))
-                # Rain.append(float(ele_array[i-4, 10] if ele_array[i-4, 10].isdigit() else 999.9))
-                # Rain.append(ele_array[i-4, 10] )
-
-
                 # WD.append(ele_array[i-4, 7] if check.match(ele_array[i-4, 7]) or ele_array[i-4, 7].isdigit() else 999.9)
         else:
             ele_array = []
@@ -68,8 +56,6 @@ def cwbdata(sta, start, end, output):
             T = np.array(ele_array[:, 3])
             WS = np.array(ele_array[:, 6])
             WD = np.array(ele_array[:, 7])
-            Rain = np.array(ele_array[:, 10])
-            GloblRad = np.array(ele_array[:, 13])
         datestart += datetime.timedelta(days=1)
     if(output == 'WS'):
         return (WS)
@@ -77,7 +63,3 @@ def cwbdata(sta, start, end, output):
         return (WD)
     elif (output == 'T2'):
         return (T)
-    elif (output == 'Rain'):
-        return (Rain)
-    elif (output == 'GloblRad'):
-        return (GloblRad)
